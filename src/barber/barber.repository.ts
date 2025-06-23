@@ -1,6 +1,6 @@
 import { InjectRepository } from "@nestjs/typeorm";
 import { Barber } from "./entities/barber.entity";
-import { Repository } from "typeorm";
+import { Like, Repository } from "typeorm";
 import { CreateBarberDto } from "./dto/create-barber.dto";
 import { BarberShop } from "src/barber-shop/entities/barber-shop.entity";
 import { UpdateBarberDto } from "./dto/update-barber.dto";
@@ -42,5 +42,13 @@ export class BarberRepository {
 
     async remove(id: number) {
         return await this.barberRepository.softDelete(id);
+    }
+
+    async searchBarber(name: string) {
+        return await this.barberRepository.find({
+            where: {
+                name: Like(`%${name}%`),
+            }
+        })
     }
 }

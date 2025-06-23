@@ -1,6 +1,6 @@
 import { InjectRepository } from "@nestjs/typeorm";
 import { BarberShop } from "./entities/barber-shop.entity";
-import { Repository } from "typeorm";
+import { Like, Repository } from "typeorm";
 import { CreateBarberShopDto } from "./dto/create-barber-shop.dto";
 import { UpdateBarberShopDto } from "./dto/update-barber-shop.dto";
 import { Injectable } from "@nestjs/common";
@@ -36,6 +36,14 @@ export class BarberShopRepository {
 
     async restore(id: number) {
         return await this.barberShopRepository.restore(id);
+    }
+
+    async searchShopBarber(name: string) {
+        return await this.barberShopRepository.find({
+            where: {
+                name: Like(`%${name}%`),
+            }
+        })
     }
 
 }
